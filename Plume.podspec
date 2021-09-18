@@ -5,7 +5,6 @@ Pod::Spec.new do |s|
   s.summary      = "a library that encapsulation for Alamofire written by Swift."
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { 'Cove' => 'ganquan007fox@foxmail.com' }
-  s.readme       =  "https://github.com/cove1205/Plume/README.md"
   s.description  = <<-DESC
                 Plume is a library that encapsulation for Alamofire written by swift
                    DESC
