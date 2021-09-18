@@ -1,0 +1,32 @@
+name: release
+
+on:
+  push:
+    branches:
+        - master
+  pull_request:
+    branches:
+        - master
+jobs:
+  run-release:
+    runs-on: macOS-latest
+        
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        id: bundler-cache
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Bundle setup
+        run: bundle config path vendor/bundle
+      - name: Bundle install
+        if: steps.bundler-cache.outputs.cache-hit != 'true'
+        run: bundle install --jobs 4 --retry 3
+      - name: Run release
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          #SWIFT_VERSION: ${{ matrix.swift-version }}
+        run: bundle exec fastlane release version:${{ secrets.COCOAPODS_TRUNK_TOKEN }}
