@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Plume"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "a library that encapsulation for Alamofire written by Swift."
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { 'Cove' => 'ganquan007fox@foxmail.com' }
