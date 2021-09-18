@@ -29,7 +29,7 @@ platform :ios do
     ensure_git_status_clean
 
     skip_tests = options[:skip_tests]
-    tests unless skip_tests
+    run_test unless skip_tests
 
     # 运行lint
     run_lint
@@ -74,7 +74,7 @@ platform :ios do
     # ensure_git_status_clean
     
     skip_tests = options[:skip_tests]
-    tests unless skip_tests
+    run_test unless skip_tests
 
     #从pre-change.yml获取change_info
     change_info = get_pre_change_info
