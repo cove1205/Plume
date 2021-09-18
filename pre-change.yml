@@ -1,0 +1,7 @@
+version: 0.1.1
+add: 
+  - "add gpg verifed"
+  - "add fastlane and Github Actions for CI"
+fix: 
+  - "modified readme docs"
+remove: 

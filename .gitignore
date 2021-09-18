@@ -1,0 +1,90 @@
+# Created by https://www.toptal.com/developers/gitignore/api/swift
+
+###### Xcode ######
+
+# User settings
+xcuserdata/
+
+# Obj-C/Swift specific
+*.hmap
+
+# App packaging
+.build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+
+###### MacOS ######
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+
+
+###### Swift Package Manager ######
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+Packages/
+Package.pins
+Package.resolved
+.swiftpm
+
+
+###### CocoaPods ######
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+Pods/
+
+
+###### Carthage ######
+# Add this line if you want to avoid checking in source code from Carthage dependencies.
+Carthage/Checkouts
+Carthage/Build/
+
+
+###### fastlane ######
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/#source-control
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/.env
+fastlane/README.md
+
+
+###### Github Actions######
+.bundle/
+vendor/
+
+
+###### AppCode ######
+.idea
+
+
+###### VSCode ######
+.vscode/
+
+
+###### Code Injection ######
+# After new code Injection tools there's a generated folder /iOSInjectionProject
+# https://github.com/johnno1962/injectionforxcode
+iOSInjectionProject/
+
+# End of https://www.toptal.com/developers/gitignore/api/swift

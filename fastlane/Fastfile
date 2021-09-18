@@ -1,0 +1,131 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform :ios
+
+platform :ios do
+
+
+  desc "在日常分支进行release前的准备"
+  lane :prepare do |options|
+
+    current_branch = 'develop'
+
+    ensure_git_branch(
+      branch: current_branch
+    )
+    ensure_git_status_clean
+
+    skip_tests = options[:skip_tests]
+    run_test unless skip_tests
+
+    #根据commit数量获取build_num
+    build_num = sync_build_number_to_git
+
+    #从pre-change.yml获取change_info
+    change_info = get_pre_change_info
+    target_version = change_info[:version]
+
+    #修改项目版本信息 (info.plist)
+    increment_version_number(version_number: target_version)
+    increment_build_number(build_number: build_num)
+
+    #修改podspec版本信息
+    version_bump_podspec(path: "Plume.podspec", version_number: target_version)
+    
+    #修改changlog文件
+    release_log = update_changelog(info: change_info)
+
+    # 运行lint
+    run_lint
+    
+    #提交所有修改
+    git_commit_all(message: "Bump version to #{target_version}")
+
+    push_to_git_remote(
+      remote: "origin",         # optional, default: "origin"
+      local_branch: current_branch,  # optional, aliased by "branch", default is set to current branch
+      remote_branch: current_branch, # optional, default is set to local_branch
+      force: true,    # optional, default: false
+      # force_with_lease: true,   # optional, default: false
+      tags: false,    # optional, default: true
+      # no_verify: true,# optional, default: false
+      # set_upstream: true        # optional, default: false
+    )
+
+  end
+
+  desc "Release new version"
+  lane :release do |options|
+
+    ensure_git_branch
+    # ensure_git_status_clean
+    
+    skip_tests = options[:skip_tests]
+    run_test unless skip_tests
+
+    #从pre-change.yml获取change_info
+    change_info = get_pre_change_info
+
+    add_git_tag(
+        tag: change_info[:version]
+    )
+    
+    push_to_git_remote
+    
+    pod_push
+  end
+
+  desc "Run the test"
+  lane :run_test do |options|
+    UI.message "running testing..."
+    # scan(
+    #   scheme: options[:scheme_name], 
+    #   clean: true, 
+    #   xcargs: "SWIFT_VERSION=#{options[:swift_version]}",
+    #   destination: options[:destination]
+    # )
+  end
+
+  desc "Build the project"
+  lane :build do |options|
+    gym(
+      workspace: "Plume.xcworkspace",
+      configuration: "Debug",
+      scheme: options[:scheme_name],
+      xcargs: "SWIFT_VERSION=#{options[:swift_version]}",
+      destination: options[:destination]
+    )
+  end
+
+  desc "Lint"
+  lane :run_lint do
+    # carthage(command: "build", no_skip_current: true, platform: "iOS")
+    pod_lib_lint
+    # spm
+  end
+
+  desc "Push the pod to remote"
+  lane :podpush do
+    pod_push
+  end
+  
+  after_all do |lane|
+  end
+
+  error do |lane, exception|
+  end
+
+end
