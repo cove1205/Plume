@@ -26,7 +26,7 @@ platform :ios do
     ensure_git_branch(
       branch: current_branch
     )
-    ensure_git_status_clean
+    # ensure_git_status_clean
 
     skip_tests = options[:skip_tests]
     run_test unless skip_tests
