@@ -19,7 +19,7 @@ platform :ios do
 
 
   desc "在日常分支进行release前的准备"
-  lane :prepare do
+  lane :prepare do |options|
 
     current_branch = 'develop'
 
