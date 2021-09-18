@@ -31,9 +31,6 @@ platform :ios do
     skip_tests = options[:skip_tests]
     run_test unless skip_tests
 
-    # 运行lint
-    run_lint
-
     #根据commit数量获取build_num
     build_num = sync_build_number_to_git
 
@@ -50,6 +47,9 @@ platform :ios do
     
     #修改changlog文件
     release_log = update_changelog(info: change_info)
+
+    # 运行lint
+    run_lint
     
     #提交所有修改
     git_commit_all(message: "Bump version to #{target_version}")
