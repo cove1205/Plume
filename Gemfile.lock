@@ -270,6 +270,7 @@ GEM
 
 PLATFORMS
   universal-darwin-20
+  universal-darwin-19
 
 DEPENDENCIES
   cocoapods
