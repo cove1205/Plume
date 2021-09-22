@@ -3,7 +3,7 @@ module Fastlane
     class GitCommitAllAction < Action
       def self.run(params)
           Action.sh "git add -A"
-          Actions.sh "git commit -am \"#{params[:message]}\""
+          Actions.sh "git commit -s -am \"#{params[:message]}\""
       end
 
       #####################################################
