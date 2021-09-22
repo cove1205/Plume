@@ -4,7 +4,8 @@ on:
   push:
     branches:
         - master
-  pull_request:
+  pull_request_review:
+    types: [submitted]
     branches:
         - master
 jobs:
@@ -12,21 +13,28 @@ jobs:
     runs-on: macOS-latest
         
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        id: bundler-cache
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: setup Ruby env and gems
+        uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - name: Bundle setup
-        run: bundle config path vendor/bundle
-      - name: Bundle install
-        if: steps.bundler-cache.outputs.cache-hit != 'true'
-        run: bundle install --jobs 4 --retry 3
+          ruby-version: 2.7
+          bundler-cache: true
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_config_global: true
+          # git_commit_gpgsign: true
+          # git_tag_gpgsign: true
+          
       - name: Run release
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-          #SWIFT_VERSION: ${{ matrix.swift-version }}
-        run: bundle exec fastlane release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: bundle exec fastlane release --verbose

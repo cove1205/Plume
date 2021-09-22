@@ -13,11 +13,28 @@ module Fastlane
         version = pre_change_data["version"]
         raise "The version should not be nil in the input file".red unless (version)
 
+        repository = pre_change_data["repository"]
+
         add = pre_change_data["add"]
         fix = pre_change_data["fix"]
         remove = pre_change_data["remove"]
 
-        return {:version => version, :add => add, :fix => fix, :remove => remove}
+        title_url = "https://github.com/#{repository}/releases/tag/#{version}"
+        title_time = Time.now.strftime("%Y-%m-%d")
+
+        title = "## [#{version}](#{title_url}) (#{title_time})\n\n"
+
+        log_text = ""
+        add = add.map { |i| "* #{i}" }.join("\n") unless add.nil?
+        log_text = log_text + "### Add\n\n#{add}\n\n" unless add.nil? or add.empty?
+
+        fix = fix.map { |i| "* #{i}" }.join("\n") unless fix.nil?
+        log_text = log_text + "### Fix\n\n#{fix}\n\n" unless fix.nil? or fix.empty?
+          
+        remove = remove.map { |i| "* #{i}" }.join("\n") unless remove.nil?
+        log_text = log_text + "### Remove\n\n#{remove}\n\n" unless remove.nil? or remove.empty?
+
+        return {:version => version, :log_title => title, :log_text => log_text}
       end
 
       #####################################################

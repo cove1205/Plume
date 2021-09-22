@@ -1,5 +1,6 @@
 # Plume
 
+[![release](https://github.com/cove1205/Plume/actions/workflows/release.yaml/badge.svg?branch=master)](https://github.com/cove1205/Plume/actions/workflows/release.yaml)
 [![License](https://img.shields.io/github/license/cove1205/Plume?style=flat)](https://cocoapods.org/pods/Plume)
 [![Platform](https://img.shields.io/cocoapods/p/Plume?style=flat&color=informational)](https://cocoapods.org/pods/Plume)
 [![Swift](https://img.shields.io/badge/Swift-5.1+-blue)](https://img.shields.io/badge/Swift-5.1+-blue?style=flat-square)
@@ -14,7 +15,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 * Swift 5.1+
-* Alamofire 5.3.4
+* Alamofire 5.3.4+
 
 ## Installation
 
